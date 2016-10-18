@@ -61,60 +61,60 @@ class Display
     end
   end
 
-  def color_the_squares
-    if [i, j] == cursor.selected_pos
-      final << (board.grid[i][j]).to_s.colorize(:background => :blue)
+  def color_square(loc, color)
+    @board[loc].to_s.colorize(:background => color)
+  end
 
-    elsif [i, j] == cursor.cursor_pos
-      final << (board.grid[i][j]).to_s.colorize(:background => :light_yellow)
+  def grab_moves(loc)
+    moves = board[loc].valid_moves
+    moves = [] if board[loc].color != @cur_color
+    moves
+  end
 
-    elsif moves.include?([i,j])
-      final << (board.grid[i][j]).to_s.colorize(:background => :white)
 
-    else
-      if i.even? && j.even? || i.odd? && j.odd?
-        final << (board.grid[i][j]).to_s.colorize(:background => :light_magenta)
-      else
-        final << (board.grid[i][j]).to_s.colorize(:background => :cyan)
+  def reset_selected!
+    if cursor.selected_pos
+      if @board[cursor.selected_pos].color != @cur_color
+        cursor.selected_pos = nil
       end
     end
   end
 
+  def unselected_valid_moves
+    unless cursor.selected
+      return grab_moves(cursor.cursor_pos)
+    end
+  end
+
+  def selected_valid_moves
+    if cursor.selected_pos
+      return grab_moves(cursor.selected_pos)
+    end
+  end
+
+  def cursor_moves
+    reset_selected!
+    selected_valid_moves || unselected_valid_moves
+  end
+
+  def get_color(pos_moves, loc)
+    return :blue if loc == cursor.selected_pos
+    return :light_yellow if loc == cursor.cursor_pos
+    return :white if pos_moves.include?(loc)
+    return (loc[0] + loc[1]) % 2 == 0 ? :light_magenta : :cyan
+  end
+
+
   def render
     final = ''
+    pos_moves = cursor_moves
 
-    unless cursor.selected
-      moves = board[cursor.cursor_pos].valid_moves
-      moves = [] if board[cursor.cursor_pos].color != @cur_color
-    end
-
-    if cursor.selected_pos
-      moves = board[cursor.selected_pos].valid_moves
-      moves = [] if board[cursor.selected_pos].color != @cur_color
-    end
-
-    board.grid.each_with_index do |row, i|
+    @board.grid.each_with_index do |row, i|
       row.each_with_index do |cell, j|
-
-        if [i, j] == cursor.selected_pos
-          final << (board.grid[i][j]).to_s.colorize(:background => :blue)
-
-        elsif [i, j] == cursor.cursor_pos
-          final << (board.grid[i][j]).to_s.colorize(:background => :light_yellow)
-
-        elsif moves.include?([i,j])
-          final << (board.grid[i][j]).to_s.colorize(:background => :white)
-
-        else
-          if i.even? && j.even? || i.odd? && j.odd?
-            final << (board.grid[i][j]).to_s.colorize(:background => :light_magenta)
-          else
-            final << (board.grid[i][j]).to_s.colorize(:background => :cyan)
-          end
-        end
-
+        loc = [i, j]
+        color = get_color(pos_moves, loc)
+        final << color_square(loc, color)
       end
-
       final << "\n"
     end
 
