@@ -97,10 +97,10 @@ class Display
   end
 
   def get_color(pos_moves, loc)
-    return :blue if loc == cursor.selected_pos
-    return :light_yellow if loc == cursor.cursor_pos
-    return :white if pos_moves.include?(loc)
-    return (loc[0] + loc[1]) % 2 == 0 ? :light_magenta : :cyan
+    return :white if loc == cursor.selected_pos
+    return :white if loc == cursor.cursor_pos
+    return :light_blue if pos_moves.include?(loc)
+    return (loc[0] + loc[1]) % 2 == 0 ? :green : :magenta
   end
 
   def color_row(pos_moves, i)
@@ -125,7 +125,9 @@ class Display
 
   def render
     print color_board ###Most Important String in the world.
-    puts board.in_check?(@cur_color) ? 'in check' : '' unless board.checkmate?(@cur_color)
+    unless board.checkmate?(@cur_color)
+      puts board.in_check?(@cur_color) ? 'in check' : ''
+    end
     puts board.checkmate?(@cur_color) ? 'checkmate!' : ''
   end
 

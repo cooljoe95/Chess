@@ -1,7 +1,0 @@
-load 'piece.rb', 'king.rb'
-load 'pawn.rb', 'knight.rb'
-load 'bishop.rb', 'null_piece.rb'
-load 'queen.rb', 'rook.rb'
-load 'board.rb', 'chess.rb'
-load 'cursor.rb', 'movement.rb'
-load 'display.rb'

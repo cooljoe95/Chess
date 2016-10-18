@@ -1,8 +1,5 @@
-require_relative 'movement'
-require_relative 'rook'
 require 'colorize'
 require 'byebug'
-
 
 class Piece
 
