@@ -134,7 +134,7 @@ class Board
   def find_king(color)
     search_grid do |piece|
       if piece.is_a?(King) && piece.color == color
-        return [i,j]
+        return piece.pos
       end
     end
   end
