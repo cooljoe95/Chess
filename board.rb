@@ -82,32 +82,34 @@ class Board
   end
 
   protected
+
+  def populate_both_sides(piece, color, row, col)
+    size = grid.length - 1
+    grid[row][col] = piece.new(color, self, [row, col])
+    grid[row][size - col] = piece.new(color, self, [row, size - col])
+  end
+
+  def populate_back_row(color, row)
+    populate_both_sides(Rook, color, row, 0)
+    populate_both_sides(Knight, color, row, 1)
+    populate_both_sides(Bishop, color, row, 2)
+
+    grid[row][3] = Queen.new(color, self, [row, 3])
+    grid[row][4] = King.new(color, self, [row, 4])
+  end
+
+  def populate_pawns(color, row)
+    8.times do |n|
+      grid[row][n] = Pawn.new(color, self, [row, n])
+    end
+  end
+
   def make_starting_grid
-    grid[0][0] = Rook.new(:black, self, [0, 0])
-    grid[0][7] = Rook.new(:black, self, [0, 7])
-    grid[0][1] = Knight.new(:black, self, [0, 1])
-    grid[0][6] = Knight.new(:black, self, [0, 6])
-    grid[0][2] = Bishop.new(:black, self, [0, 2])
-    grid[0][5] = Bishop.new(:black, self, [0, 5])
-    grid[0][3] = Queen.new(:black, self, [0, 3])
-    grid[0][4] = King.new(:black, self, [0, 4])
+    populate_back_row(:black, 0)
+    populate_pawns(:black, 1)
+    populate_back_row(:white, 7)
+    populate_pawns(:white, 6)
 
-    8.times do |n|
-      grid[1][n] = Pawn.new(:black, self, [1, n])
-    end
-
-    grid[7][0] = Rook.new(:white, self, [7, 0])
-    grid[7][7] = Rook.new(:white, self, [7, 7])
-    grid[7][1] = Knight.new(:white, self, [7, 1])
-    grid[7][6] = Knight.new(:white, self, [7, 6])
-    grid[7][2] = Bishop.new(:white, self, [7, 2])
-    grid[7][5] = Bishop.new(:white, self, [7, 5])
-    grid[7][3] = Queen.new(:white, self, [7, 3])
-    grid[7][4] = King.new(:white, self, [7, 4])
-
-    8.times do |n|
-      grid[6][n] = Pawn.new(:white, self, [6, n])
-    end
 
     # nullpiece = Singleton::NullPiece.new
     (2..5).each do |i|
@@ -115,10 +117,6 @@ class Board
         grid[i][j] = NullPiece.new
       end
     end
-    #
-    # grid[1][4] = Rook.new(:white, self, [1, 4])
-    # grid[2][4] = Rook.new(:white, self, [2, 4])
-    # p (grid[1][3]).valid_moves
   end
 
 
