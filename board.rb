@@ -17,8 +17,6 @@ class Board
   end
 
   def move(color, start_pos, end_pos)
-    # raise StandardError.new('Piece not found') if grid[start_pos].is_a?(NullPiece)
-    # # TODO: raise StandardError.new('Cannot make move')
     if self[start_pos].valid_moves.include?(end_pos)
       move!(start_pos, end_pos)
     else
@@ -44,34 +42,46 @@ class Board
   end
 
   def move!(start_pos, end_pos)
-    self[start_pos].pos = nil unless self[start_pos].is_a?(NullPiece)
+    ## Capture enemy and get them off board
+    self[start_pos].pos = nil unless self[start_pos].class == NullPiece
     self[end_pos] = self[start_pos]
     self[start_pos] = NullPiece.instance
     self[end_pos].pos = end_pos
   end
 
-  def in_check?(color)
-    king_pos = find_king(color)
+  def search_grid
     grid.each_with_index do |row, i|
       row.each_with_index do |cell, j|
-        if cell.color != color
-          return true if cell.moves.include?(king_pos)
-        end
+        yield(cell)
       end
     end
+  end
+
+  def in_check?(color)
+    king_pos = find_king(color)
+
+    search_grid do |piece|
+      if piece.color != color && piece.moves.include?(king_pos)
+        return true
+      end
+    end
+
     false
+  end
+
+  def no_valid_moves?(color)
+    search_grid do |piece|
+      if piece.color == color && !piece.valid_moves.empty?
+        return false
+      end
+    end
+
+    true
   end
 
   def checkmate?(color)
     if in_check?(color)
-      grid.each_with_index do |row, i|
-        row.each_with_index do |cell, j|
-          if cell.color == color
-            return false unless cell.valid_moves.empty?
-          end
-        end
-      end
-      return true
+      return no_valid_moves?(color)
     end
     false
   end
@@ -121,14 +131,10 @@ class Board
     populate_nulls
   end
 
-
-
   def find_king(color)
-    grid.each_with_index do |row, i|
-      row.each_with_index do |cell, j|
-        if cell.is_a?(King) && cell.color == color
-          return [i,j]
-        end
+    search_grid do |piece|
+      if piece.is_a?(King) && piece.color == color
+        return [i,j]
       end
     end
   end
@@ -154,5 +160,3 @@ class Board
 end
 
 board = Board.new
-#puts board.in_check?(:black)
-board[[2,4]].moves
