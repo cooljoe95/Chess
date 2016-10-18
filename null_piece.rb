@@ -20,7 +20,7 @@ class NullPiece
   end
 
   def to_s
-    "  "
+    "   "
   end
 
   def empty?

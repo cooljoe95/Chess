@@ -66,9 +66,8 @@ class Display
   end
 
   def grab_moves(loc)
-    moves = board[loc].valid_moves
-    moves = [] if board[loc].color != @cur_color
-    moves
+    return [] if board[loc].color != @cur_color
+    board[loc].valid_moves
   end
 
 
@@ -104,22 +103,28 @@ class Display
     return (loc[0] + loc[1]) % 2 == 0 ? :light_magenta : :cyan
   end
 
+  def color_row(pos_moves, i)
+    colored_row = ""
+    @board.grid.each_with_index do |cell, j|
+      color = get_color(pos_moves, [i, j])
+      colored_row << color_square([i, j], color)
+    end
+    colored_row
+  end
 
-  def render
-    final = ''
+  def color_board
     pos_moves = cursor_moves
-
+    final = ""
     @board.grid.each_with_index do |row, i|
-      row.each_with_index do |cell, j|
-        loc = [i, j]
-        color = get_color(pos_moves, loc)
-        final << color_square(loc, color)
-      end
+      final << color_row(pos_moves, i)
       final << "\n"
     end
+    final
+  end
 
-    print final ###Most Important String in the world.
 
+  def render
+    print color_board ###Most Important String in the world.
     puts board.in_check?(@cur_color) ? 'in check' : '' unless board.checkmate?(@cur_color)
     puts board.checkmate?(@cur_color) ? 'checkmate!' : ''
   end
