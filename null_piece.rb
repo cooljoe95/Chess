@@ -1,6 +1,9 @@
+require 'singleton'
+
 class NullPiece
 
-  # include Singleton
+  include Singleton
+
   def initialize(*arg1)
   end
 

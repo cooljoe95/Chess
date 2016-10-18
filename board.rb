@@ -46,7 +46,7 @@ class Board
   def move!(start_pos, end_pos)
     self[start_pos].pos = nil unless self[start_pos].is_a?(NullPiece)
     self[end_pos] = self[start_pos]
-    self[start_pos] = NullPiece.new
+    self[start_pos] = NullPiece.instance
     self[end_pos].pos = end_pos
   end
 
@@ -104,19 +104,21 @@ class Board
     end
   end
 
+  def populate_nulls
+    (2..5).each do |i|
+      8.times do |j|
+        grid[i][j] = NullPiece.instance
+      end
+    end
+  end
+
   def make_starting_grid
     populate_back_row(:black, 0)
     populate_pawns(:black, 1)
     populate_back_row(:white, 7)
     populate_pawns(:white, 6)
 
-
-    # nullpiece = Singleton::NullPiece.new
-    (2..5).each do |i|
-      8.times do |j|
-        grid[i][j] = NullPiece.new
-      end
-    end
+    populate_nulls
   end
 
 
@@ -131,8 +133,22 @@ class Board
     end
   end
 
+  def dup_piece(el, new_board)
+    if el.class == NullPiece
+      return el.class.instance
+    end
+    el.class.new(el.color, new_board, el.pos)
+  end
+
+  def dup_row(el, new_board)
+    if el.is_a?(Array)
+      return deep_dup(el, new_board)
+    end
+    dup_piece(el, new_board)
+  end
+
   def deep_dup(arr, new_board)
-    arr.map { |el| el.is_a?(Array) ? deep_dup(el, new_board) : el.class.new(el.color, new_board, el.pos) }
+    arr.map { |el| dup_row(el, new_board) }
   end
 
 end
