@@ -19,7 +19,6 @@ class Board
   def move(color, start_pos, end_pos)
     # raise StandardError.new('Piece not found') if grid[start_pos].is_a?(NullPiece)
     # # TODO: raise StandardError.new('Cannot make move')
-    #debugger
     if self[start_pos].valid_moves.include?(end_pos)
       move!(start_pos, end_pos)
     else

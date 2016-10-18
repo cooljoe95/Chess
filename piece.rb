@@ -32,7 +32,6 @@ class Piece
   end
 
   def valid_moves
-    # debugger
     self.moves.reject do |pos|
       move_into_check?(pos)
     end
@@ -40,7 +39,6 @@ class Piece
 
   private
   def move_into_check?(to_pos)
-    # debugger if to_pos == [1, 4]
     new_board = board.dup
     new_board.move!(self.pos, to_pos)
     new_board.in_check?(self.color)
@@ -64,7 +62,6 @@ class SlidingPiece < Piece
         x += dx
         y += dy
       end
-      # debugger
       final_locs << [x, y] if board.in_bounds?([x, y]) && board.grid[x][y].color != self.color
     end
     final_locs
