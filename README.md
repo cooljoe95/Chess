@@ -8,6 +8,10 @@ In order to run the program in your console, go to the file in the terminal, and
 ruby chess.rb
 ```
 
+## Screenshot
+### Beginning Board
+![link](/assets/Screen\ Shot\ 2016-10-18\ at\ 7.59.29\ PM.png)
+
 ## Rules
 For people already familiar with chess, this game does not implement Castling and En-passant and you can skip this section.
 
