@@ -1,16 +1,25 @@
 # Chess
 Attached is my implementation of chess. It features a guide that the user can use to show the available moves for a given piece. You are able to move around the board using the standard 'wasd' keys as well as the directional keys. This game was implemented in Ruby.
 
+In order to run the program in your console, first download it as a zip, use the image below as a guide:
+![link](/assets/download.png)
+
+Unzip the file.
+
+Go to the file in Finder and open a Terminal window. Type `cd ` and drag the folder to terminal window like so:
+![link](/assets/terminal.png)
+
+
 * **Before running the program**, I recommend increasing the zoom using cmd + '+'. For reference, it is roughly 24 characters wide. 
 
-In order to run the program in your console, go to the file in the terminal, and run
+Press enter and then run the command:
 ```bash
 ruby chess.rb
 ```
 
 ## Screenshot
 ### Beginning Board
-![link](/assets/Screen\ Shot\ 2016-10-18\ at\ 7.59.29\ PM.png)
+![link](/assets/gameplay.png)
 
 ## Rules
 For people already familiar with chess, this game does not implement Castling and En-passant and you can skip this section.
