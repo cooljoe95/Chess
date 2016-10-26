@@ -14,7 +14,7 @@ class Display
 
   def clear_display
     system('clear')
-    puts 'current player: ' + @cur_color.to_s
+    puts 'Current Player: ' + @cur_color.to_s.upcase
     render
   end
 
@@ -114,12 +114,13 @@ class Display
 
   def color_board
     pos_moves = cursor_moves
-    final = ""
+    final = "\n   A  B  C  D  E  F  G  H\n"
     @board.grid.each_with_index do |row, i|
+      final << "#{i} "
       final << color_row(pos_moves, i)
-      final << "\n"
+      final << " #{i}\n"
     end
-    final
+    final << "   A  B  C  D  E  F  G  H\n"
   end
 
 
