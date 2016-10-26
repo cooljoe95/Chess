@@ -1,5 +1,5 @@
 # Chess
-Attached is my implementation of chess. It features a guide that the user can use to show the available moves for a given piece. You are able to move around the board using the standard 'wasd' keys as well as the directional keys. This game was implemented in Ruby.
+Attached is my implementation of chess. It features a guide that the user can use to show the available moves for a given piece. The current player's color is displayed above the game board. You are able to move around the board using the standard "WASD", "HJKL", or "←↑→↓" (arrow) Keys. This game was implemented in Ruby.
 
 In order to run the program in your console, first download it as a zip, use the image below as a guide:
 ![link](/assets/download.png)
