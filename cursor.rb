@@ -47,7 +47,6 @@ class Cursor
     begin
       handle_key(key)
     rescue StandardError => e
-      puts e.message
     end
   end
 
